@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:testsd/data/calc_logic.dart';
 import 'package:testsd/widgets/button.dart';
+import 'package:testsd/widgets/result_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,15 +26,9 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                calculator.input,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: size),
-              ),
+            ResultBox(
+              calculatorInput: calculator.input,
+              size: size,
             ),
             Column(
               children: [

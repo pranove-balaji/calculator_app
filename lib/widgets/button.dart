@@ -1,6 +1,8 @@
 // button.dart
 import 'package:flutter/material.dart';
-
+/// camelCase (method names)
+/// PascalCase (class_names)
+/// lower_case (filenames,foldernames)
 class CalculatorButton extends StatelessWidget {
   final String value;
   final Color bgcolor;
