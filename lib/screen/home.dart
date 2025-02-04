@@ -1,4 +1,7 @@
+// home.dart
 import 'package:flutter/material.dart';
+import 'package:testsd/data/calc_logic.dart';
+import 'package:testsd/widgets/button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,10 +11,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    double size = 0;
-  String input = "";
-  String calculated = "";
-  String operator = "";
+  final CalculatorLogic calculator =
+      CalculatorLogic(); // Create a logic instance
+
+  double size = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               alignment: Alignment.bottomRight,
               child: Text(
-                input,
+                calculator.input,
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -36,37 +39,86 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    calcbutton("7", Colors.white38),
-                    calcbutton("8", Colors.white38),
-                    calcbutton("9", Colors.white38),
-                    calcbutton("x", const Color.fromARGB(115, 103, 102, 102))
+                    CalculatorButton(
+                        value: "7",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "8",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "9",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "x",
+                        bgcolor: Color.fromARGB(115, 103, 102, 102),
+                        onTap: onButtonTap)
                   ],
                 ),
                 Row(
                   children: [
-                    calcbutton("6", Colors.white38),
-                    calcbutton("5", Colors.white38),
-                    calcbutton("4", Colors.white38),
-                    calcbutton("+", const Color.fromARGB(115, 103, 102, 102))
+                    CalculatorButton(
+                        value: "6",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "5",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "4",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "+",
+                        bgcolor: Color.fromARGB(115, 103, 102, 102),
+                        onTap: onButtonTap)
                   ],
                 ),
                 Row(
                   children: [
-                    calcbutton("3", Colors.white38),
-                    calcbutton("2", Colors.white38),
-                    calcbutton("1", Colors.white38),
-                    calcbutton("-", const Color.fromARGB(115, 103, 102, 102))
+                    CalculatorButton(
+                        value: "3",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "2",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "1",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "-",
+                        bgcolor: Color.fromARGB(115, 103, 102, 102),
+                        onTap: onButtonTap)
                   ],
                 ),
                 Row(
                   children: [
-                    calcbutton("0", Colors.white38),
-                    calcbutton(".", Colors.white38),
-                    calcbutton("=", Colors.white38),
-                    calcbutton("%", const Color.fromARGB(115, 103, 102, 102))
+                    CalculatorButton(
+                        value: "0",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: ".",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "=",
+                        bgcolor: Colors.white38,
+                        onTap: onButtonTap),
+                    CalculatorButton(
+                        value: "%",
+                        bgcolor: Color.fromARGB(115, 103, 102, 102),
+                        onTap: onButtonTap)
                   ],
                 ),
-                calcbutton("clear", Colors.black)
+                CalculatorButton(
+                    value: "clear", bgcolor: Colors.black, onTap: onButtonTap)
               ],
             )
           ],
@@ -75,58 +127,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget calcbutton(String value, Color bgcolor) {
-    return InkWell(
-        onTap: () {
-          if (value == "clear") {
-            setState(() {
-              input = "";
-              calculated = "";
-              operator = "";
-            });
-          } else if (value == "+" ||
-              value == "-" ||
-              value == "%" ||
-              value == "*") {
-            setState(() {
-              calculated = input;
-              input = "";
-              operator = value;
-            });
-          } else if (value == "=") {
-            double calc1 = double.parse(input);
-            double calc2 = double.parse(calculated);
-            setState(() {
-              if (operator == "+") {
-                input = (calc1 + calc2).toString();
-              } else if (operator == "%") {
-                input = (calc2 / calc1).toString();
-              } else if (operator == "-") {
-                input = (calc2 - calc1).toString();
-              } else if (operator == "x") {
-                input = (calc1 * calc2).toString();
-              }
-            });
-          } else {
-            setState(() {
-              input = input + value;
-            });
-          }
-        },
-        child: Container(
-          margin: EdgeInsets.all(size / 8),
-          alignment: Alignment.center,
-          height: size,
-          width: size,
-          decoration: BoxDecoration(
-              color: bgcolor, borderRadius: BorderRadius.circular(100)),
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 50,
-              color: Colors.white,
-            ),
-          ),
-        ));
+  void onButtonTap(String value) {
+    setState(() {
+      if (value == "clear") {
+        calculator.clear();
+      } else if (value == "+" || value == "-" || value == "%" || value == "x") {
+        calculator.handleOperator(value);
+      } else if (value == "=") {
+        calculator.calculate();
+      } else {
+        calculator.appendValue(value);
+      }
+    });
   }
 }
