@@ -15,7 +15,7 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width / 4; // Adjust button size
+    double size = MediaQuery.of(context).size.width / 5; // Adjust button size
 
     return InkWell(
       onTap: () => onTap(value), // Pass the button value to onTap callback
